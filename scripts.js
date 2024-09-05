@@ -1,81 +1,82 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const openPopupLink = document.querySelector(".open-popup-link");
-    const loginPopup = document.getElementById("loginPopup");
-    const signupPopup = document.getElementById("signupPopup");
-    const forgotPasswordPopup = document.getElementById("forgotPasswordPopup");
-    
-    const closeButtons = document.querySelectorAll(".close-btn");
-    
-    closeButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            loginPopup.style.display = "none";
-            signupPopup.style.display = "none";
-            forgotPasswordPopup.style.display = "none";
-        });
-    });
-    
-    openPopupLink.addEventListener("click", (event) => {
-        event.preventDefault();
-        loginPopup.style.display = "flex";
-    });
+    // Popup functionality
+    const openPopupLinks = document.querySelectorAll('.open-popup-link');
+    const closeBtns = document.querySelectorAll('.close-btn');
+    const signInForm = document.getElementById('loginPopup');
+    const signUpForm = document.getElementById('signupPopup');
+    const forgotPasswordForm = document.getElementById('forgotPasswordPopup');
 
-    const switchForms = document.querySelectorAll(".switch-form");
-
-    switchForms.forEach(link => {
-        link.addEventListener("click", (event) => {
-            event.preventDefault();
-            const targetPopup = document.querySelector(link.getAttribute("data-target"));
-            loginPopup.style.display = "none";
-            signupPopup.style.display = "none";
-            forgotPasswordPopup.style.display = "none";
-            targetPopup.style.display = "flex";
+    openPopupLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            signInForm.style.display = 'flex'; // Display the sign-in form popup
         });
     });
 
-    // Handle form submissions
-    const loginForm = document.getElementById("loginForm");
-    const signupForm = document.getElementById("signupForm");
-    const forgotPasswordForm = document.getElementById("forgotPasswordForm");
-    const errorMessage = document.getElementById("error-message");
-    const signupErrorMessage = document.getElementById("signup-error-message");
-    const forgotPasswordErrorMessage = document.getElementById("forgot-password-error-message");
-
-    loginForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-
-        if (username === "" || password === "") {
-            errorMessage.textContent = "Both fields are required.";
-        } else {
-            errorMessage.textContent = "";
-            console.log("Login attempt with:", { username, password });
-        }
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            signInForm.style.display = 'none';
+            signUpForm.style.display = 'none';
+            forgotPasswordForm.style.display = 'none';
+        });
     });
 
-    signupForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const email = document.getElementById("email").value;
-        const newUsername = document.getElementById("new-username").value;
-        const newPassword = document.getElementById("new-password").value;
-
-        if (email === "" || newUsername === "" || newPassword === "") {
-            signupErrorMessage.textContent = "All fields are required.";
-        } else {
-            signupErrorMessage.textContent = "";
-            console.log("Sign up attempt with:", { email, newUsername, newPassword });
-        }
+    // Form toggle functionality
+    document.querySelectorAll('.switch-form').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelectorAll('.popup-container').forEach(popup => popup.style.display = 'none');
+            const target = document.querySelector(link.dataset.target);
+            if (target) target.style.display = 'flex';
+        });
     });
 
-    forgotPasswordForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const email = document.getElementById("forgot-email").value;
+    // Form validation
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            let isValid = true;
+            form.querySelectorAll('input').forEach(input => {
+                const errorMessage = input.nextElementSibling;
+                if (input.value.trim() === '') {
+                    isValid = false;
+                    errorMessage.textContent = 'This field is required';
+                    errorMessage.style.display = 'block';
+                } else {
+                    errorMessage.style.display = 'none';
+                }
+            });
 
-        if (email === "") {
-            forgotPasswordErrorMessage.textContent = "Email is required.";
-        } else {
-            forgotPasswordErrorMessage.textContent = "";
-            console.log("Password reset link sent to:", { email });
-        }
+            if (isValid) {
+                alert('Form submitted successfully!');
+            }
+        });
+    });
+
+    // Clear error messages when user starts typing
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', function () {
+            const errorMessage = input.nextElementSibling;
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+        });
+    });
+
+    // Hamburger menu functionality
+    const hamburger = document.querySelector('.hamburger');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    hamburger.addEventListener('click', function () {
+        mobileMenu.classList.toggle('show');
+        hamburger.classList.toggle('active');
+    });
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+        link.addEventListener('click', function () {
+            mobileMenu.classList.remove('show');
+            hamburger.classList.remove('active');
+        });
     });
 });
