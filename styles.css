@@ -1,0 +1,256 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: center; /* Center align items */
+    align-items: center;
+    padding: 10px 15px; /* Adjust padding */
+    background-color: #3a3a3a;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.logo {
+    margin-right: 20px; /* Space between logo and nav links */
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px; /* Adjust space between nav links if needed */
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 50px;
+    transition: color 0.3s, border-bottom 0.3s;
+    padding: 5px 10px;
+}
+
+.nav-links a:hover {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+/* Specific Styles for the Sign In / Sign Up Link */
+.open-popup-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 50px;
+    padding: 5px 10px;
+    transition: color 0.3s, border-bottom 0.3s;
+    margin-left: 20px; /* Space between nav links and popup link */
+}
+
+.open-popup-link:hover {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+/* Hero Section Styles */
+.hero {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-image: url('img/background ghibli.svg'); /* Ensure path is correct */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* Prevent image from repeating */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    text-align: center;
+    padding-top: 60px; /* Space for the fixed navbar */
+    position: relative;
+    box-sizing: border-box; /* Ensure padding is included in height */
+}
+
+.hero-content {
+    z-index: 1;
+    padding: 20px;
+    max-width: 90%;
+}
+
+.hero h1 {
+    font-family: 'Work Sans', sans-serif; /* Apply Work Sans font */
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-family: 'Playfair Display', serif; /* Apply Playfair Display font */
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: transparent;
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.cta-button:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Popup Styles */
+.popup-container {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    background-color: #2b2b2b; /* Dark background for popup content */
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+}
+
+.popup-content .image-box {
+    flex: 1;
+    max-width: 50%;
+    padding: 10px;
+}
+
+.popup-content .image-box img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.popup-content .login-box,
+.popup-content .signup-box,
+.popup-content .forgot-password-box {
+    flex: 1;
+    max-width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #2b2b2b; /* Dark background for forms */
+    border-radius: 10px;
+}
+
+.popup-content h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.popup-content p {
+    color: #b0b0b0;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.popup-content label {
+    display: block;
+    margin-bottom: 5px;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.popup-content input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #333;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.popup-content button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.popup-content button:hover {
+    background-color: #0056b3;
+}
+
+.popup-content p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.switch-form {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.switch-form:hover {
+    text-decoration: underline;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .popup-content {
+        flex-direction: column;
+    }
+
+    .popup-content .image-box,
+    .popup-content .login-box,
+    .popup-content .signup-box,
+    .popup-content .forgot-password-box {
+        max-width: 100%;
+    }
+}
