@@ -8,16 +8,102 @@ body {
 /* Navbar Styles */
 .navbar {
     display: flex;
-    justify-content: center; /* Center align items */
+    justify-content: space-between;
     align-items: center;
-    padding: 10px 15px; /* Adjust padding */
-    background-color: #3a3a3a;
+    padding: 10px 15px;
+    background-color: #ffffff; /* White background for the navbar */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    box-sizing: border-box; /* Ensure padding is included in width */
+    box-sizing: border-box;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-links a {
+    color: #000000; /* Black color for nav links */
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 50px;
+    transition: color 0.3s, border-bottom 0.3s;
+    padding: 5px 10px;
+}
+
+.nav-links a:hover {
+    color: #007bff; /* Adjust hover color as needed */
+    border-bottom: 2px solid #000000; /* Black underline on hover */
+}
+
+/* Mobile Menu Styles */
+.mobile-menu {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 60px; /* Adjust according to navbar height */
+    left: 0;
+    width: 100%;
+    background-color: #ffffff; /* White background for mobile menu */
+    z-index: 1050;
+}
+
+.mobile-menu a {
+    color: #000000; /* Black color for mobile menu links */
+    padding: 10px 15px;
+    text-decoration: none;
+    border-bottom: 1px solid #000000;
+}
+
+.mobile-menu a:hover {
+    background-color: #f0f0f0; /* Adjust hover background as needed */
+}
+
+
+.hamburger {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #000000;
+    transition: transform 0.3s;
+}
+
+/* Hide the Sign In / Sign Up link outside the hamburger menu on mobile screens */
+@media (max-width: 768px) {
+    .navbar-popup-link {
+        display: none;
+    }
+}
+
+
+.mobile-menu a:hover {
+    background-color: #000000;
+}
+
+/* Show hamburger and mobile menu on smaller screens */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* Hide normal navbar */
+    }
+
+    .hamburger {
+        display: flex; /* Show hamburger icon */
+    }
+
+    .mobile-menu.show {
+        display: flex; /* Show mobile menu when activated */
+    }
 }
 
 .logo {
@@ -29,13 +115,8 @@ body {
     width: auto;
 }
 
-.nav-links {
-    display: flex;
-    gap: 10px; /* Adjust space between nav links if needed */
-}
-
 .nav-links a {
-    color: #ffffff;
+    color: #000000;
     text-decoration: none;
     font-size: 16px;
     line-height: 50px;
@@ -45,12 +126,12 @@ body {
 
 .nav-links a:hover {
     color: #007bff;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #000000;
 }
 
 /* Specific Styles for the Sign In / Sign Up Link */
 .open-popup-link {
-    color: #ffffff;
+    color: #000000;
     text-decoration: none;
     font-size: 16px;
     line-height: 50px;
@@ -61,7 +142,7 @@ body {
 
 .open-popup-link:hover {
     color: #007bff;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #000000;
 }
 
 /* Hero Section Styles */
@@ -131,7 +212,7 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.918);
     justify-content: center;
     align-items: center;
 }
