@@ -202,6 +202,102 @@ body {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+/* Synopsis Section */
+.synopsis {
+    display: flex;
+    justify-content: space-between; /* Space between text and gallery */
+    padding: 20px; /* Padding around the section */
+    box-sizing: border-box; /* Ensures padding is included in the width */
+}
+
+/* Synopsis Text */
+.synopsis-text {
+    flex: 60%; /* Text section takes up 60% of the width */
+    padding-right: 20px; /* Adds space between text and gallery */
+    box-sizing: border-box; /* Padding does not affect overall width */
+}
+
+/* Synopsis Gallery */
+.synopsis-gallery {
+    flex: 40%; /* Gallery takes up 40% of the width */
+    display: flex; /* Use flexbox for responsive wrapping */
+    flex-wrap: wrap; /* Allows images to wrap naturally */
+    gap: 5px; /* Minimal gap between images for a tighter fit */
+    box-sizing: border-box; /* Ensures padding does not affect width */
+    align-items: flex-start; /* Align items to the top */
+}
+
+/* Gallery Items */
+.synopsis-gallery .gallery-item {
+    flex: 1 1 calc(50% - 5px); /* Each image takes up about half the width, with minimal spacing */
+    max-width: calc(50% - 5px); /* Prevents images from growing too large */
+}
+
+/* Images */
+.synopsis-gallery .gallery-item img {
+    width: 100%; /* Images fill the container width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure images do not stretch or distort */
+    border-radius: 8px; /* Optional: rounded corners */
+    transition: transform 0.3s; /* Smooth transition effect */
+}
+
+/* Hover Effect on Images */
+.synopsis-gallery .gallery-item img:hover {
+    transform: scale(1.05); /* Slight zoom-in effect on hover */
+}
+/* Lightbox Styles */
+.lightbox {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed position */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    z-index: 1000; /* Ensure lightbox is above other content */
+}
+
+.lightbox img {
+    max-width: 90%; /* Limit max width of image */
+    max-height: 80%; /* Limit max height of image */
+}
+
+.close-lightbox {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+}
+
+
+.synopsis p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .synopsis {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .synopsis-text, .synopsis-gallery {
+        max-width: 100%;
+    }
+
+    .synopsis-gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 /* Popup Styles */
 .popup-container {
