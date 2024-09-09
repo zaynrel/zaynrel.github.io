@@ -80,3 +80,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+// Select the lightbox and its components
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightbox-image');
+const closeLightbox = document.querySelector('.close-lightbox');
+
+// Event listener for opening lightbox
+document.querySelectorAll('.synopsis-gallery .gallery-item img').forEach(img => {
+    img.addEventListener('click', () => {
+        lightboxImage.src = img.getAttribute('data-src'); // Set the image src
+        lightbox.style.display = 'flex'; // Show lightbox
+    });
+});
+
+// Event listener for closing lightbox
+closeLightbox.addEventListener('click', () => {
+    lightbox.style.display = 'none'; // Hide lightbox
+});
