@@ -10,6 +10,35 @@
         body {
             font-family: 'Roboto', sans-serif;
         }
+        .menu-icon {
+            transition: transform 0.3s ease;
+        }
+        .menu-icon.open {
+            transform: rotate(90deg);
+        }
+        .mobile-menu {
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+        .mobile-menu.hidden {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .mobile-menu.visible {
+            max-height: 500px; /* Adjust as needed */
+            opacity: 1;
+        }
+        .mobile-menu nav a {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .mobile-menu.hidden nav a {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        .mobile-menu.visible nav a {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -28,11 +57,11 @@
         </nav>
         <div class="md:hidden">
             <button id="menu-button" class="text-white focus:outline-none">
-                <i class="fas fa-bars text-2xl"></i>
+                <i class="fas fa-bars text-2xl menu-icon"></i>
             </button>
         </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden">
+    <div id="mobile-menu" class="mobile-menu hidden md:hidden">
         <nav class="flex flex-col items-center space-y-4 py-4">
             <a class="text-sm hover:underline" href="#">Schedule</a>
             <a class="text-sm hover:underline" href="#">Speakers</a>
@@ -63,37 +92,97 @@
             <div class="flex-1 w-full md:w-auto">
                 <label class="block text-xs md:text-sm font-bold mb-2">Time</label>
                 <select class="w-full bg-gray-100 p-2 rounded text-xs md:text-sm">
-                    <option>Any date</option>
+                    <option>12 desember</option>
+                    <option>14 desember</option>
                 </select>
             </div>
         </div>
     </div>
 </main>
 <section class="container mx-auto px-4 py-12 md:py-16">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Upcoming Events</h2>
-    <div class="flex flex-col md:flex-row justify-center space-y-2 md:space-y-0 md:space-x-4 mb-8">
-        <button class="bg-purple-500 text-white text-sm md:text-base px-4 py-2 rounded-full hover:bg-purple-600">Weekdays</button>
-        <button class="bg-purple-500 text-white text-sm md:text-base px-4 py-2 rounded-full hover:bg-purple-600">Event Type</button>
-        <button class="bg-purple-500 text-white text-sm md:text-base px-4 py-2 rounded-full hover:bg-purple-600">Any Category</button>
-    </div>
-</section>
-<section class="container mx-auto px-4 py-12 md:py-16">
     <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Countdown to Event</h2>
     <div id="countdown" class="text-center text-2xl md:text-4xl font-bold text-purple-500"></div>
 </section>
+
+<section class="container mx-auto px-4 py-12 md:py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Upcoming Events</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img alt="Wonder Girls performing on stage" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/P64WsWfZRSzdJqHopHRhj4rHuvF6QhRI5gzDRek7v98ZSWmTA.jpg"/>
+            <div class="p-4">
+                <div class="text-sm text-gray-500 mb-2">APR</div>
+                <div class="text-2xl font-bold text-gray-900 mb-2">14</div>
+                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh</h2>
+                <p class="text-gray-600">We'll get you directly seated and inside for you to enjoy the show.</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img alt="JYJ performing on stage with colorful lights" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/JUxmu7CloKJjIBj6JixJ9HHiFlGvdBlxf09eswLzy05WSWmTA.jpg"/>
+            <div class="p-4">
+                <div class="text-sm text-gray-500 mb-2">AUG</div>
+                <div class="text-2xl font-bold text-gray-900 mb-2">20</div>
+                <h2 class="text-lg font-semibold text-gray-900 mb-2">bruv contoh</h2>
+                <p class="text-gray-600">Directly seated and inside for you to enjoy the show.</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img alt="Super Junior performing on stage with blue lights" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/kpIYxEeXCqUVSCgDEvm4bj535JCmEtVVQSfbhGGEy7fuksMnA.jpg"/>
+            <div class="p-4">
+                <div class="text-sm text-gray-500 mb-2">SEP</div>
+                <div class="text-2xl font-bold text-gray-900 mb-2">18</div>
+                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh ae</h2>
+                <p class="text-gray-600">Directly seated and inside for you to enjoy the show.</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img alt="Wonder Girls performing on stage" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/P64WsWfZRSzdJqHopHRhj4rHuvF6QhRI5gzDRek7v98ZSWmTA.jpg"/>
+            <div class="p-4">
+                <div class="text-sm text-gray-500 mb-2">APR</div>
+                <div class="text-2xl font-bold text-gray-900 mb-2">14</div>
+                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh aja</h2>
+                <p class="text-gray-600">We'll get you directly seated and inside for you to enjoy the show.</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img alt="JYJ performing on stage with blue lights" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/aRrNeGUi79WQBan1owL6Npfb6eodSl5eb4MemedTooOOnkl5E.jpg"/>
+            <div class="p-4">
+                <div class="text-sm text-gray-500 mb-2">AUG</div>
+                <div class="text-2xl font-bold text-gray-900 mb-2">20</div>
+                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh aja</h2>
+                <p class="text-gray-600">Directly seated and inside for you to enjoy the show.</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img alt="Super Junior performing on stage with colorful lights" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/pXUlHvIZ8xrhOJz9L5UjRBNdyd80IbY1lOOerpUxdYwNJLzJA.jpg"/>
+            <div class="p-4">
+                <div class="text-sm text-gray-500 mb-2">SEP</div>
+                <div class="text-2xl font-bold text-gray-900 mb-2">18</div>
+                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh aja</h2>
+                <p class="text-gray-600">Directly seated and inside for you to enjoy the show.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Add your event cards here, similar to the ones you already have -->
+</div>
 <script>
     document.getElementById('menu-button').addEventListener('click', function() {
         var menu = document.getElementById('mobile-menu');
+        var icon = document.querySelector('.menu-icon');
         if (menu.classList.contains('hidden')) {
             menu.classList.remove('hidden');
+            icon.classList.add('open');
         } else {
             menu.classList.add('hidden');
+            icon.classList.remove('open');
         }
     });
 
     // Countdown Timer
     function countdownTimer() {
-        const eventDate = new Date("Dec 31, 2023 23:59:59").getTime();
+        const eventDate = new Date("Dec 31, 2024 23:59:59").getTime(); // Update the date as needed
         const now = new Date().getTime();
         const distance = eventDate - now;
 
