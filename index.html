@@ -1,165 +1,91 @@
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage with Navbar</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Import Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&family=Playfair+Display:wght@400;700&display=swap">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Indo Music Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
 </head>
-
-<body>
-    <!-- Navigation Bar -->
-    <header class="navbar">
-        <div class="logo">
-            <img src="img/logo jetapon.svg" alt="Logo">
+<body class="bg-white">
+<header class="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+            <i class="fas fa-music text-2xl mr-2"></i>
+            <span class="text-lg md:text-xl font-bold">Indo Music Fest</span>
         </div>
-        <nav class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#feature">Feature</a>
-            <a href="#news/update">News/Update</a>
-            <a href="#plans">Plans and Pricing</a>
+        <nav class="hidden md:flex items-center space-x-4 md:space-x-6">
+            <a class="text-sm md:text-base hover:underline" href="#">Schedule</a>
+            <a class="text-sm md:text-base hover:underline" href="#">Speakers</a>
+            <a class="text-sm md:text-base hover:underline" href="#">Ticket</a>
+            <a class="text-sm md:text-base hover:underline" href="#">Contact</a>
+            <a class="bg-white text-purple-500 text-sm md:text-base px-3 md:px-4 py-2 rounded-full hover:bg-gray-200" href="#">Login</a>
         </nav>
-        <a href="#" class="open-popup-link navbar-popup-link">Sign In / Sign Up</a> <!-- Updated class -->
-        <!-- Hamburger Icon for Mobile -->
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="md:hidden">
+            <button id="menu-button" class="text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
         </div>
-        <!-- Mobile Menu -->
-        <div class="mobile-menu">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#feature">Feature</a>
-            <a href="#news/update">News/Update</a>
-            <a href="#plans">Plans and Pricing</a>
-            <a href="#" class="open-popup-link">Sign In / Sign Up</a>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Welcome to Zetapon</h1>
-                <p>Discover the adventure that awaits.</p>
-                <a href="#signup" class="cta-button">Get Started</a>
-            </div>
-        </section>
-
- <!-- Synopsis Section -->
-<section class="synopsis">
-    <div class="synopsis-text">
-        <h2>Synopsis</h2>
-        <p>Fathir muhammad alqorni, fathan aqila rayyandra, fathdlan muhammad alfarizi</p>
     </div>
-    <div class="synopsis-gallery">
-        <div class="gallery-item"><img src="img/ucing.jpg" alt="Sample Image 1" data-src="img/ucing.jpg"></div>
-        <div class="gallery-item"><img src="img/mobil 2.jpg" alt="Sample Image 2" data-src="img/mobil 2.jpg"></div>
-        <div class="gallery-item"><img src="img/mobil 3.jpg" alt="Sample Image 3" data-src="img/mobil 3.jpg"></div>
-        <div class="gallery-item"><img src="img/mobil 1.jpg" alt="Sample Image 4" data-src="img/mobil 1.jpg"></div>
-        <div class="gallery-item"><img src="img/mobil 4.jpg" alt="Sample Image 5" data-src="img/mobil 4.jpg"></div>
-        <div class="gallery-item"><img src="img/mobil 5.jpg" alt="Sample Image 6" data-src="img/mobil 5.jpg"></div>
+    <div id="mobile-menu" class="hidden md:hidden">
+        <nav class="flex flex-col items-center space-y-4 py-4">
+            <a class="text-sm hover:underline" href="#">Schedule</a>
+            <a class="text-sm hover:underline" href="#">Speakers</a>
+            <a class="text-sm hover:underline" href="#">Ticket</a>
+            <a class="text-sm hover:underline" href="#">Contact</a>
+            <a class="bg-white text-purple-500 text-sm px-3 py-2 rounded-full hover:bg-gray-200" href="#">Login</a>
+        </nav>
+    </div>
+</header>
+<main class="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+    <div class="container mx-auto px-4 py-12 md:py-16 text-center relative">
+        <img alt="Group of people at a music festival" class="mx-auto mb-8 w-full max-w-xs md:max-w-md" src="https://storage.googleapis.com/a1aa/image/CSKLEcJWUQKrPRlQ85Me41WjuFVT8rneNTpbzycwbHzftqMnA.jpg"/>
+        <h1 class="text-2xl md:text-4xl font-bold mb-4">Festival Musik Terbesar Di <span class="text-3xl md:text-5xl">INDONESIA</span></h1>
+        <p class="mb-8 text-sm md:text-base">Lorem ipsum anjay mabar</p>
+        <div class="space-x-2 md:space-x-4">
+            <a class="bg-pink-500 text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-pink-600" href="#">Get Ticket</a>
+            <a class="border border-white text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-white hover:text-purple-500" href="#">Learn More</a>
+        </div>
+        <div class="bg-white text-purple-500 rounded-lg shadow-lg mt-12 md:mt-16 p-4 md:p-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div class="flex-1 w-full md:w-auto">
+                <label class="block text-xs md:text-sm font-bold mb-2">Search Event</label>
+                <input class="w-full bg-gray-100 p-2 rounded text-xs md:text-sm" type="text" value="Konser Jazz"/>
+            </div>
+            <div class="flex-1 w-full md:w-auto mx-0 md:mx-4">
+                <label class="block text-xs md:text-sm font-bold mb-2">Place</label>
+                <input class="w-full bg-gray-100 p-2 rounded text-xs md:text-sm" type="text" value="Indonesia"/>
+            </div>
+            <div class="flex-1 w-full md:w-auto">
+                <label class="block text-xs md:text-sm font-bold mb-2">Time</label>
+                <select class="w-full bg-gray-100 p-2 rounded text-xs md:text-sm">
+                    <option>Any date</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</main>
+<section class="container mx-auto px-4 py-12 md:py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Upcoming Events</h2>
+    <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
+        <button class="bg-gray-100 text-gray-700 text-sm md:text-base px-4 py-2 rounded-full">Weekdays</button>
+        <button class="bg-gray-100 text-gray-700 text-sm md:text-base px-4 py-2 rounded-full">Event Type</button>
+        <button class="bg-gray-100 text-gray-700 text-sm md:text-base px-4 py-2 rounded-full">Any Category</button>
     </div>
 </section>
-
-<!-- Lightbox HTML -->
-<div id="lightbox" class="lightbox">
-    <span class="close-lightbox">&times;</span>
-    <img id="lightbox-image" src="" alt="Lightbox Image">
-</div>
-
-
-        <!-- Add your other main content here -->
-    </main>
-
-    <!-- Login Popup -->
-    <div class="popup-container" id="loginPopup">
-        <div class="popup-content">
-            <span class="close-btn">&times;</span>
-            <div class="login-box">
-                <h2>Welcome</h2>
-                <p>Sign in to your account</p>
-                <form id="loginForm">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username">
-                    
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password">
-
-                    <!-- Error Message Display -->
-                    <p id="error-message" style="color: red;"></p>
-
-                    <button type="submit">Login</button>
-                    <p><a href="#" class="switch-form" data-target="#forgotPasswordPopup">Forgot Password?</a> | <a href="#" class="switch-form" data-target="#signupPopup">Sign Up</a></p>
-                </form>
-            </div>
-            <div class="image-box">
-                <img src="img/bagro.jpg" alt="Background Image">
-            </div>
-        </div>
-    </div>
-
-    <!-- Sign Up Popup -->
-    <div class="popup-container" id="signupPopup">
-        <div class="popup-content">
-            <span class="close-btn">&times;</span>
-            <div class="signup-box">
-                <h2>Create an Account</h2>
-                <p>Sign up to get started</p>
-                <form id="signupForm">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                    
-                    <label for="new-username">Username</label>
-                    <input type="text" id="new-username" name="username" required>
-                    
-                    <label for="new-password">Password</label>
-                    <input type="password" id="new-password" name="password" required>
-
-                    <!-- Error Message Display -->
-                    <p id="signup-error-message" style="color: red;"></p>
-
-                    <button type="submit">Sign Up</button>
-                    <p><a href="#" class="switch-form" data-target="#loginPopup">Already have an account? Sign In</a></p>
-                </form>
-            </div>
-            <div class="image-box">
-                <img src="img/asipa.jpg" alt="Signup Background Image">
-            </div>
-        </div>
-    </div>
-
-    <!-- Forgot Password Popup -->
-    <div class="popup-container" id="forgotPasswordPopup">
-        <div class="popup-content">
-            <span class="close-btn">&times;</span>
-            <div class="forgot-password-box">
-                <h2>Forgot Password</h2>
-                <p>Enter your email address to receive a password reset link.</p>
-                <form id="forgotPasswordForm">
-                    <label for="forgot-email">Email</label>
-                    <input type="email" id="forgot-email" name="email" required>
-
-                    <!-- Error Message Display -->
-                    <p id="forgot-password-error-message" style="color: red;"></p>
-
-                    <button type="submit">Send Reset Link</button>
-                </form>
-            </div>
-            <div class="image-box">
-                <img src="img/abuda.jpg" alt="Forgot Password Background Image">
-            </div>
-        </div>
-    </div>
-
-    <script src="scripts.js"></script>
+<script>
+    document.getElementById('menu-button').addEventListener('click', function() {
+        var menu = document.getElementById('mobile-menu');
+        if (menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+        } else {
+            menu.classList.add('hidden');
+        }
+    });
+</script>
 </body>
-
 </html>
-
