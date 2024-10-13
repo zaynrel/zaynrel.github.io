@@ -38,7 +38,7 @@
             <a class="text-sm hover:underline" href="#">Speakers</a>
             <a class="text-sm hover:underline" href="#">Ticket</a>
             <a class="text-sm hover:underline" href="#">Contact</a>
-            <a class="bg-white text-purple-500 text-sm px-3 py-2 rounded-full hover:bg-gray-200" href="#">Login</a>
+            <a class="border border-white text-white text-sm px-3 py-2 rounded-full hover:bg-white hover:text-purple-500" href="#">Login</a>
         </nav>
     </div>
 </header>
@@ -72,10 +72,14 @@
 <section class="container mx-auto px-4 py-12 md:py-16">
     <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Upcoming Events</h2>
     <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
-        <button class="bg-gray-100 text-gray-700 text-sm md:text-base px-4 py-2 rounded-full">Weekdays</button>
-        <button class="bg-gray-100 text-gray-700 text-sm md:text-base px-4 py-2 rounded-full">Event Type</button>
-        <button class="bg-gray-100 text-gray-700 text-sm md:text-base px-4 py-2 rounded-full">Any Category</button>
+        <button class="border border-white text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-white hover:text-purple-500">Weekdays</button>
+        <button class="border border-white text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-white hover:text-purple-500">Event Type</button>
+        <button class="border border-white text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-white hover:text-purple-500">Any Category</button>
     </div>
+</section>
+<section class="container mx-auto px-4 py-12 md:py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Countdown to Event</h2>
+    <div id="countdown" class="text-center text-2xl md:text-4xl font-bold text-purple-500"></div>
 </section>
 <script>
     document.getElementById('menu-button').addEventListener('click', function() {
@@ -86,6 +90,28 @@
             menu.classList.add('hidden');
         }
     });
+
+    // Countdown Timer
+    function countdownTimer() {
+        const eventDate = new Date("Dec 31, 2023 23:59:59").getTime();
+        const now = new Date().getTime();
+        const distance = eventDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("countdown").innerHTML = "EXPIRED";
+        }
+    }
+
+    const x = setInterval(countdownTimer, 1000);
 </script>
 </body>
 </html>
