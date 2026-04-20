@@ -1,206 +1,124 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="id">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Indo Music Fest</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-        .menu-icon {
-            transition: transform 0.3s ease;
-        }
-        .menu-icon.open {
-            transform: rotate(90deg);
-        }
-        .mobile-menu {
-            transition: max-height 0.3s ease, opacity 0.3s ease;
-        }
-        .mobile-menu.hidden {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-        }
-        .mobile-menu.visible {
-            max-height: 500px; /* Adjust as needed */
-            opacity: 1;
-        }
-        .mobile-menu nav a {
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .mobile-menu.hidden nav a {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        .mobile-menu.visible nav a {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>FIF Simulasi Kredit Motor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-white">
-<header class="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div class="flex items-center">
-            <i class="fas fa-music text-2xl mr-2"></i>
-            <span class="text-lg md:text-xl font-bold">Indo Music Fest</span>
-        </div>
-        <nav class="hidden md:flex items-center space-x-4 md:space-x-6">
-            <a class="text-sm md:text-base hover:underline" href="#">Schedule</a>
-            <a class="text-sm md:text-base hover:underline" href="#">Speakers</a>
-            <a class="text-sm md:text-base hover:underline" href="#">Ticket</a>
-            <a class="text-sm md:text-base hover:underline" href="#">Contact</a>
-            <a class="bg-white text-purple-500 text-sm md:text-base px-3 md:px-4 py-2 rounded-full hover:bg-gray-200" href="#">Login</a>
-        </nav>
-        <div class="md:hidden">
-            <button id="menu-button" class="text-white focus:outline-none">
-                <i class="fas fa-bars text-2xl menu-icon"></i>
-            </button>
-        </div>
+<body>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-pill">Team Eep</div>
+      <h1 class="app-title">Simulasi<br><span>Kredit Motor</span></h1>
+      <p class="app-subtitle">Bandung Raya · April 2026</p>
     </div>
-    <div id="mobile-menu" class="mobile-menu hidden md:hidden">
-        <nav class="flex flex-col items-center space-y-4 py-4">
-            <a class="text-sm hover:underline" href="#">Schedule</a>
-            <a class="text-sm hover:underline" href="#">Speakers</a>
-            <a class="text-sm hover:underline" href="#">Ticket</a>
-            <a class="text-sm hover:underline" href="#">Contact</a>
-            <a class="border border-white text-white text-sm px-3 py-2 rounded-full hover:bg-white hover:text-purple-500" href="#">Login</a>
-        </nav>
-    </div>
-</header>
-<main class="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-    <div class="container mx-auto px-4 py-12 md:py-16 text-center relative">
-        <img alt="Group of people at a music festival" class="mx-auto mb-8 w-full max-w-xs md:max-w-md" src="https://storage.googleapis.com/a1aa/image/CSKLEcJWUQKrPRlQ85Me41WjuFVT8rneNTpbzycwbHzftqMnA.jpg"/>
-        <h1 class="text-2xl md:text-4xl font-bold mb-4">Festival Musik Terbesar Di <span class="text-3xl md:text-5xl">INDONESIA</span></h1>
-        <p class="mb-8 text-sm md:text-base">Lorem ipsum anjay mabar</p>
-        <div class="space-x-2 md:space-x-4">
-            <a class="bg-pink-500 text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-pink-600" href="#">Get Ticket</a>
-            <a class="border border-white text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-white hover:text-purple-500" href="#">Learn More</a>
-        </div>
-        <div class="bg-white text-purple-500 rounded-lg shadow-lg mt-12 md:mt-16 p-4 md:p-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div class="flex-1 w-full md:w-auto">
-                <label class="block text-xs md:text-sm font-bold mb-2">Search Event</label>
-                <input class="w-full bg-gray-100 p-2 rounded text-xs md:text-sm" type="text" value="Konser Jazz"/>
-            </div>
-            <div class="flex-1 w-full md:w-auto mx-0 md:mx-4">
-                <label class="block text-xs md:text-sm font-bold mb-2">Place</label>
-                <input class="w-full bg-gray-100 p-2 rounded text-xs md:text-sm" type="text" value="Indonesia"/>
-            </div>
-            <div class="flex-1 w-full md:w-auto">
-                <label class="block text-xs md:text-sm font-bold mb-2">Time</label>
-                <select class="w-full bg-gray-100 p-2 rounded text-xs md:text-sm">
-                    <option>12 desember</option>
-                    <option>14 desember</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</main>
-<section class="container mx-auto px-4 py-12 md:py-16">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Countdown to Event</h2>
-    <div id="countdown" class="text-center text-2xl md:text-4xl font-bold text-purple-500"></div>
-</section>
+    <div class="header-deco"></div>
+  </header>
 
-<section class="container mx-auto px-4 py-12 md:py-16">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Upcoming Events</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img alt="Wonder Girls performing on stage" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/P64WsWfZRSzdJqHopHRhj4rHuvF6QhRI5gzDRek7v98ZSWmTA.jpg"/>
-            <div class="p-4">
-                <div class="text-sm text-gray-500 mb-2">APR</div>
-                <div class="text-2xl font-bold text-gray-900 mb-2">14</div>
-                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh</h2>
-                <p class="text-gray-600">We'll get you directly seated and inside for you to enjoy the show.</p>
-            </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img alt="JYJ performing on stage with colorful lights" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/JUxmu7CloKJjIBj6JixJ9HHiFlGvdBlxf09eswLzy05WSWmTA.jpg"/>
-            <div class="p-4">
-                <div class="text-sm text-gray-500 mb-2">AUG</div>
-                <div class="text-2xl font-bold text-gray-900 mb-2">20</div>
-                <h2 class="text-lg font-semibold text-gray-900 mb-2">bruv contoh</h2>
-                <p class="text-gray-600">Directly seated and inside for you to enjoy the show.</p>
-            </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img alt="Super Junior performing on stage with blue lights" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/kpIYxEeXCqUVSCgDEvm4bj535JCmEtVVQSfbhGGEy7fuksMnA.jpg"/>
-            <div class="p-4">
-                <div class="text-sm text-gray-500 mb-2">SEP</div>
-                <div class="text-2xl font-bold text-gray-900 mb-2">18</div>
-                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh ae</h2>
-                <p class="text-gray-600">Directly seated and inside for you to enjoy the show.</p>
-            </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img alt="Wonder Girls performing on stage" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/P64WsWfZRSzdJqHopHRhj4rHuvF6QhRI5gzDRek7v98ZSWmTA.jpg"/>
-            <div class="p-4">
-                <div class="text-sm text-gray-500 mb-2">APR</div>
-                <div class="text-2xl font-bold text-gray-900 mb-2">14</div>
-                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh aja</h2>
-                <p class="text-gray-600">We'll get you directly seated and inside for you to enjoy the show.</p>
-            </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img alt="JYJ performing on stage with blue lights" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/aRrNeGUi79WQBan1owL6Npfb6eodSl5eb4MemedTooOOnkl5E.jpg"/>
-            <div class="p-4">
-                <div class="text-sm text-gray-500 mb-2">AUG</div>
-                <div class="text-2xl font-bold text-gray-900 mb-2">20</div>
-                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh aja</h2>
-                <p class="text-gray-600">Directly seated and inside for you to enjoy the show.</p>
-            </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img alt="Super Junior performing on stage with colorful lights" class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/pXUlHvIZ8xrhOJz9L5UjRBNdyd80IbY1lOOerpUxdYwNJLzJA.jpg"/>
-            <div class="p-4">
-                <div class="text-sm text-gray-500 mb-2">SEP</div>
-                <div class="text-2xl font-bold text-gray-900 mb-2">18</div>
-                <h2 class="text-lg font-semibold text-gray-900 mb-2">contoh aja</h2>
-                <p class="text-gray-600">Directly seated and inside for you to enjoy the show.</p>
-            </div>
-        </div>
-    </div>
-</section>
+  <main class="app-main">
 
-<div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Add your event cards here, similar to the ones you already have -->
-</div>
-<script>
-    document.getElementById('menu-button').addEventListener('click', function() {
-        var menu = document.getElementById('mobile-menu');
-        var icon = document.querySelector('.menu-icon');
-        if (menu.classList.contains('hidden')) {
-            menu.classList.remove('hidden');
-            icon.classList.add('open');
-        } else {
-            menu.classList.add('hidden');
-            icon.classList.remove('open');
-        }
-    });
+    <!-- FORM CARD -->
+    <section class="form-card">
 
-    // Countdown Timer
-    function countdownTimer() {
-        const eventDate = new Date("Dec 31, 2024 23:59:59").getTime(); // Update the date as needed
-        const now = new Date().getTime();
-        const distance = eventDate - now;
+      <!-- Motor selection -->
+      <div class="field-group">
+        <label class="field-label" for="motor-select">
+          <span class="label-num">01</span> Pilih Motor
+        </label>
+        <div class="select-wrapper">
+          <select id="motor-select" class="field-select">
+            <option value="">-- Pilih tipe motor --</option>
+          </select>
+          <span class="select-arrow">↓</span>
+        </div>
+        <div id="otr-badge" class="otr-badge hidden">
+          OTR: <strong id="otr-value">-</strong>
+        </div>
+      </div>
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      <!-- Tenor selection -->
+      <div class="field-group" id="tenor-group" style="display:none">
+        <label class="field-label">
+          <span class="label-num">02</span> Pilih Tenor
+        </label>
+        <div id="tenor-buttons" class="tenor-grid"></div>
+      </div>
 
-        document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s ";
+      <!-- DP input -->
+      <div class="field-group" id="dp-group" style="display:none">
+        <label class="field-label" for="dp-input">
+          <span class="label-num">03</span> Uang Muka (DP)
+        </label>
+        <div class="dp-input-wrapper">
+          <span class="rp-prefix">Rp</span>
+          <input
+            type="text"
+            id="dp-input"
+            class="field-input"
+            inputmode="numeric"
+            placeholder="0"
+            autocomplete="off"
+          />
+        </div>
+        <div id="dp-range-hint" class="dp-hint"></div>
+        <div id="dp-error" class="dp-error hidden">⚠ DP di luar rentang tersedia</div>
+      </div>
 
-        if (distance < 0) {
-            clearInterval(x);
-            document.getElementById("countdown").innerHTML = "EXPIRED";
-        }
-    }
+      <button id="simulate-btn" class="simulate-btn hidden">
+        Hitung Angsuran →
+      </button>
 
-    const x = setInterval(countdownTimer, 1000);
-</script>
+    </section>
+
+    <!-- RESULT CARD -->
+    <section id="result-card" class="result-card hidden">
+      <div class="result-header">
+        <span class="result-tag">Hasil Simulasi</span>
+      </div>
+
+      <div class="result-motor-name" id="res-motor"></div>
+
+      <div class="result-grid">
+        <div class="res-block">
+          <div class="res-label">Uang Muka</div>
+          <div class="res-value" id="res-dp">-</div>
+          <div class="res-note" id="res-dp-note"></div>
+        </div>
+        <div class="res-block accent">
+          <div class="res-label">Angsuran / Bulan</div>
+          <div class="res-value big" id="res-installment">-</div>
+        </div>
+        <div class="res-block">
+          <div class="res-label">Tenor</div>
+          <div class="res-value" id="res-tenor">-</div>
+        </div>
+        <div class="res-block">
+          <div class="res-label">OTR</div>
+          <div class="res-value" id="res-otr">-</div>
+        </div>
+      </div>
+
+      <div class="result-footer">
+        <div class="result-total-block">
+          <span class="res-label">Total Bayar</span>
+          <span class="res-total" id="res-total">-</span>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="reset-btn">← Hitung Ulang</button>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    Data resmi FIF Group · Hanya untuk simulasi
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
