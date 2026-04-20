@@ -11,7 +11,7 @@
 <body>
 
   <header class="app-header">
-    <div class="brand-pill">Sinar Karya - Team Eep</div>
+    <div class="brand-pill">Sinar Karya · Team Eep</div>
     <h1 class="app-title">Simulasi<br><span>Kredit Motor</span></h1>
     <p class="app-subtitle">Bandung Raya · April 2026</p>
     <div class="header-deco"></div>
@@ -19,10 +19,15 @@
 
   <main class="app-main">
 
-    <!-- FORM CARD -->
-    <section class="form-card">
+    <!-- LOADING STATE -->
+    <div id="loading-card" class="loading-card">
+      <div class="spinner"></div>
+      <p class="loading-text">Memuat data motor...</p>
+    </div>
 
-      <!-- 01 Motor -->
+    <!-- FORM CARD -->
+    <section class="form-card hidden" id="form-card">
+
       <div class="field-group">
         <label class="field-label" for="motor-select">
           <span class="label-num">01</span> Pilih Motor
@@ -38,7 +43,6 @@
         </div>
       </div>
 
-      <!-- 02 Tenor -->
       <div class="field-group" id="tenor-group" style="display:none">
         <label class="field-label">
           <span class="label-num">02</span> Pilih Tenor
@@ -46,7 +50,6 @@
         <div id="tenor-buttons" class="tenor-grid"></div>
       </div>
 
-      <!-- 03 DP -->
       <div class="field-group" id="dp-group" style="display:none">
         <label class="field-label" for="dp-input">
           <span class="label-num">03</span> DP Customer
@@ -56,7 +59,7 @@
           <input type="text" id="dp-input" class="field-input" inputmode="numeric" placeholder="0" autocomplete="off" />
         </div>
         <div id="dp-hints" class="dp-hints-row">
-          <span id="dp-min-hint" class="dp-chip">Min: -</span>
+          <span id="dp-min-hint" class="dp-chip min-chip">Min: -</span>
           <span id="dp-normal-hint" class="dp-chip">Normal: -</span>
         </div>
         <div id="dp-error" class="dp-error hidden"></div>
@@ -71,7 +74,6 @@
 
       <div class="result-motor-name" id="res-motor"></div>
 
-      <!-- Angsuran -->
       <div class="res-section-label">Angsuran</div>
       <div class="result-grid three-col">
         <div class="res-block accent span-full">
@@ -88,35 +90,28 @@
         </div>
       </div>
 
-      <!-- DP Breakdown -->
       <div class="res-section-label" style="margin-top:20px">Kalkulasi DP</div>
       <div class="result-grid two-col">
-
         <div class="res-block highlight-dp">
           <div class="res-label">DP Customer</div>
           <div class="res-value yellow" id="res-dp-customer">-</div>
         </div>
-
         <div class="res-block">
           <div class="res-label">DP Normal</div>
           <div class="res-value" id="res-dp-normal">-</div>
           <div class="res-note" id="res-dp-note"></div>
         </div>
-
         <div class="res-block">
           <div class="res-label">Plafon Diskon</div>
           <div class="res-value green" id="res-plafon">-</div>
         </div>
-
         <div class="res-block highlight-setor">
           <div class="res-label">Setor ke Dealer</div>
           <div class="res-value white-bold" id="res-setor">-</div>
           <div class="res-note">DP Normal − Plafon</div>
         </div>
-
       </div>
 
-      <!-- Profit -->
       <div class="profit-band">
         <div class="profit-row">
           <span class="profit-label">💰 Untung Sales</span>
@@ -125,7 +120,6 @@
         <div class="profit-note" id="res-dp-min-note"></div>
       </div>
 
-      <!-- Total kredit -->
       <div class="total-row">
         <span class="total-label">Total Bayar Kredit</span>
         <span class="total-value" id="res-total-kredit">-</span>
@@ -137,10 +131,9 @@
   </main>
 
   <footer class="app-footer">
-    DataBase Final PL FIF Group · Team Eep · Simulasi internal by Faka
+    Data PL April  · Faka Ganteng · Simulasi internal
   </footer>
 
-  <script src="data.js"></script>
   <script src="plafon_data.js"></script>
   <script src="script.js"></script>
 </body>

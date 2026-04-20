@@ -1,10 +1,11 @@
 // ============================================================
 //  Simulasi Kredit Motor — script.js
-//  Logic: DP bebas, DP minimum = Setor Dealer (untung = 0)
-//  Plafon: SEMUA LEASING bracket 15-30% dari plafon_data.js
+//  Data loaded via fetch(data.json) — no blocking JS parse
 // ============================================================
 
 // ─── DOM ─────────────────────────────────────────────────────
+const loadingCard   = document.getElementById('loading-card');
+const formCard      = document.getElementById('form-card');
 const motorSelect   = document.getElementById('motor-select');
 const otrBadge      = document.getElementById('otr-badge');
 const otrValueEl    = document.getElementById('otr-value');
@@ -19,7 +20,6 @@ const simulateBtn   = document.getElementById('simulate-btn');
 const resultCard    = document.getElementById('result-card');
 const resetBtn      = document.getElementById('reset-btn');
 
-// Result
 const resMotor       = document.getElementById('res-motor');
 const resInstallment = document.getElementById('res-installment');
 const resTenor       = document.getElementById('res-tenor');
@@ -34,13 +34,12 @@ const resDpMinNote   = document.getElementById('res-dp-min-note');
 const resTotalKredit = document.getElementById('res-total-kredit');
 
 // ─── State ───────────────────────────────────────────────────
+let FIF_DATA         = null;   // loaded from data.json
 let selectedSheetKey = null;
 let selectedTenor    = null;
 let rawDpValue       = '';
-
-// Derived from selected motor + tenor (updated when tenor selected)
-let currentDpMin    = 0;   // DP minimum = setor dealer
-let currentDpNormal = 0;   // first DP in table (DP normal minimum)
+let currentDpMin     = 0;
+let currentDpNormal  = 0;
 
 // ─── Helpers ─────────────────────────────────────────────────
 const fmt = n => 'Rp ' + Number(n).toLocaleString('id-ID');
@@ -56,18 +55,24 @@ function setDpInputValue(num) {
   dpInput.value = num > 0 ? num.toLocaleString('id-ID') : '';
 }
 
-// ─── Compute DP min for current motor + tenor ─────────────────
-function computeDpMin(sheetKey, tenor) {
-  const data   = FIF_DATA[sheetKey];
-  const plafon = getPlafonDiskon(sheetKey, tenor);
-  // Walk dp_table from lowest DP; find first row where dp - plafon >= 0
-  // i.e. setor dealer >= 0 and untung >= 0 when dpCustomer == setor
-  // Setor dealer = dpNormal - plafon
-  // dpMin = setor dealer = dpNormal - plafon
-  // We use the smallest dp entry's setor as the dp minimum
-  const firstRow = data.dp_table[0];
-  const setor    = Math.max(0, firstRow.dp - plafon);
-  return setor; // DP minimum customer bisa bayar tanpa nombok
+// ─── Load data.json ───────────────────────────────────────────
+async function loadData() {
+  try {
+    const res = await fetch('data.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    FIF_DATA = await res.json();
+    populateMotors();
+    loadingCard.style.display = 'none';
+    formCard.classList.remove('hidden');
+  } catch (err) {
+    loadingCard.innerHTML = `
+      <p style="font-family:var(--mono);font-size:13px;color:#C0392B;text-align:center">
+        ⚠ Gagal memuat data.<br>Pastikan file data.json ada di folder yang sama.<br><br>
+        <button onclick="loadData()" style="padding:10px 20px;background:#E8001D;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">
+          Coba Lagi
+        </button>
+      </p>`;
+  }
 }
 
 // ─── Populate motor dropdown ──────────────────────────────────
@@ -85,9 +90,9 @@ function populateTenors(tenors) {
   tenorBtnsEl.innerHTML = '';
   tenors.forEach(t => {
     const btn = document.createElement('button');
-    btn.className  = 'tenor-btn';
+    btn.className = 'tenor-btn';
     btn.dataset.tenor = t;
-    btn.innerHTML  = `${t}<small>bln</small>`;
+    btn.innerHTML = `${t}<small>bln</small>`;
     btn.addEventListener('click', () => selectTenor(t));
     tenorBtnsEl.appendChild(btn);
   });
@@ -99,24 +104,21 @@ function selectTenor(tenor) {
     b.classList.toggle('active', parseInt(b.dataset.tenor) === tenor)
   );
 
-  const data = FIF_DATA[selectedSheetKey];
+  const data   = FIF_DATA[selectedSheetKey];
   const plafon = getPlafonDiskon(selectedSheetKey, tenor);
 
-  // DP min = setor dealer from lowest dp row
   currentDpMin    = Math.max(0, data.dp_table[0].dp - plafon);
   currentDpNormal = data.dp_table[0].dp;
 
-  // Update hints
   dpMinHint.textContent    = `Min: ${fmt(currentDpMin)}`;
   dpNormalHint.textContent = `Normal: ${fmt(currentDpNormal)}`;
 
-  // Make chips clickable → auto-fill
   dpMinHint.onclick    = () => { setDpInputValue(currentDpMin);    validateAndUpdate(); };
   dpNormalHint.onclick = () => { setDpInputValue(currentDpNormal); validateAndUpdate(); };
 
   dpGroup.style.display = 'flex';
-  dpInput.value = '';
-  rawDpValue = '';
+  dpInput.value  = '';
+  rawDpValue     = '';
   dpError.classList.add('hidden');
   simulateBtn.classList.add('hidden');
   dpInput.focus();
@@ -126,9 +128,9 @@ function selectTenor(tenor) {
 motorSelect.addEventListener('change', () => {
   const key = motorSelect.value;
   selectedSheetKey = key || null;
-  selectedTenor    = null;
-  rawDpValue       = '';
-  dpInput.value    = '';
+  selectedTenor = null;
+  rawDpValue = '';
+  dpInput.value = '';
   dpError.classList.add('hidden');
 
   if (!key) {
@@ -157,19 +159,16 @@ dpInput.addEventListener('input', e => {
 
 function validateAndUpdate(num) {
   if (num === undefined) num = parseInt(rawDpValue, 10) || 0;
-  if (!selectedSheetKey || !selectedTenor) return;
-
-  const data   = FIF_DATA[selectedSheetKey];
-  const maxDp  = data.dp_table[data.dp_table.length - 1].dp;
-
-  if (num === 0) {
+  if (!selectedSheetKey || !selectedTenor || num === 0) {
     dpError.classList.add('hidden');
     simulateBtn.classList.add('hidden');
     return;
   }
 
+  const maxDp = FIF_DATA[selectedSheetKey].dp_table.at(-1).dp;
+
   if (num < currentDpMin) {
-    dpError.textContent = `⚠ DP minimum ${fmt(currentDpMin)} — sales akan nombok di bawah ini`;
+    dpError.textContent = `⚠ DP minimum ${fmt(currentDpMin)} — di bawah ini sales nombok`;
     dpError.classList.remove('hidden');
     simulateBtn.classList.add('hidden');
   } else if (num > maxDp) {
@@ -195,36 +194,35 @@ function simulate() {
   const installment = closestRow.installments[String(selectedTenor)];
   if (!installment) { alert('Data angsuran tidak tersedia.'); return; }
 
-  const plafon  = getPlafonDiskon(selectedSheetKey, selectedTenor);
-  const setor   = Math.max(0, dpNormal - plafon);
-  const untung  = Math.max(0, dpCustomer - setor);
-  const totalKredit = dpCustomer + (installment * selectedTenor);
+  const plafon = getPlafonDiskon(selectedSheetKey, selectedTenor);
+  const setor  = Math.max(0, dpNormal - plafon);
+  const untung = Math.max(0, dpCustomer - setor);
+  const total  = dpCustomer + (installment * selectedTenor);
 
-  // Render
-  resMotor.textContent        = data.name;
-  resInstallment.textContent  = fmt(installment);
-  resTenor.textContent        = selectedTenor + ' bulan';
-  resOtr.textContent          = fmt(data.otr);
-  resDpCustomer.textContent   = fmt(dpCustomer);
-  resDpNormal.textContent     = fmt(dpNormal);
-  resDpNote.textContent       = dpNormal !== dpCustomer ? `terdekat dari ${fmt(dpCustomer)}` : '';
-  resPlafon.textContent       = fmt(plafon);
-  resSetor.textContent        = fmt(setor);
-  resUntung.textContent       = fmt(untung);
-  resUntung.className         = 'profit-value' + (untung === 0 ? ' zero' : '');
-  resDpMinNote.textContent    = untung === 0
+  resMotor.textContent       = data.name;
+  resInstallment.textContent = fmt(installment);
+  resTenor.textContent       = selectedTenor + ' bulan';
+  resOtr.textContent         = fmt(data.otr);
+  resDpCustomer.textContent  = fmt(dpCustomer);
+  resDpNormal.textContent    = fmt(dpNormal);
+  resDpNote.textContent      = dpNormal !== dpCustomer ? `terdekat dari ${fmt(dpCustomer)}` : '';
+  resPlafon.textContent      = fmt(plafon);
+  resSetor.textContent       = fmt(setor);
+  resUntung.textContent      = fmt(untung);
+  resUntung.className        = 'profit-value' + (untung === 0 ? ' zero' : '');
+  resDpMinNote.textContent   = untung === 0
     ? '⚠ Ini DP minimum — untung sales = 0'
     : `DP minimum untuk motor ini: ${fmt(setor)}`;
-  resTotalKredit.textContent  = fmt(totalKredit);
+  resTotalKredit.textContent = fmt(total);
 
-  document.querySelector('.form-card').style.display = 'none';
+  formCard.style.display = 'none';
   resultCard.classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ─── Reset ────────────────────────────────────────────────────
 resetBtn.addEventListener('click', () => {
-  document.querySelector('.form-card').style.display = 'flex';
+  formCard.style.display = 'flex';
   resultCard.classList.add('hidden');
   dpInput.value = '';
   rawDpValue    = '';
@@ -234,4 +232,4 @@ resetBtn.addEventListener('click', () => {
 });
 
 // ─── Init ─────────────────────────────────────────────────────
-populateMotors();
+loadData();
