@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>FIF Simulasi Kredit Motor</title>
+  <title>Simulasi Kredit Motor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
@@ -11,11 +11,9 @@
 <body>
 
   <header class="app-header">
-    <div class="header-inner">
-      <div class="brand-pill">Team Eep</div>
-      <h1 class="app-title">Simulasi<br><span>Kredit Motor</span></h1>
-      <p class="app-subtitle">Bandung Raya · April 2026</p>
-    </div>
+    <div class="brand-pill">Sinar Karya - Team Eep</div>
+    <h1 class="app-title">Simulasi<br><span>Kredit Motor</span></h1>
+    <p class="app-subtitle">Bandung Raya · April 2026</p>
     <div class="header-deco"></div>
   </header>
 
@@ -24,7 +22,7 @@
     <!-- FORM CARD -->
     <section class="form-card">
 
-      <!-- Motor selection -->
+      <!-- 01 Motor -->
       <div class="field-group">
         <label class="field-label" for="motor-select">
           <span class="label-num">01</span> Pilih Motor
@@ -40,7 +38,7 @@
         </div>
       </div>
 
-      <!-- Tenor selection -->
+      <!-- 02 Tenor -->
       <div class="field-group" id="tenor-group" style="display:none">
         <label class="field-label">
           <span class="label-num">02</span> Pilih Tenor
@@ -48,47 +46,35 @@
         <div id="tenor-buttons" class="tenor-grid"></div>
       </div>
 
-      <!-- DP input -->
+      <!-- 03 DP -->
       <div class="field-group" id="dp-group" style="display:none">
         <label class="field-label" for="dp-input">
-          <span class="label-num">03</span> Uang Muka (DP)
+          <span class="label-num">03</span> DP Customer
         </label>
         <div class="dp-input-wrapper">
           <span class="rp-prefix">Rp</span>
-          <input
-            type="text"
-            id="dp-input"
-            class="field-input"
-            inputmode="numeric"
-            placeholder="0"
-            autocomplete="off"
-          />
+          <input type="text" id="dp-input" class="field-input" inputmode="numeric" placeholder="0" autocomplete="off" />
         </div>
-        <div id="dp-range-hint" class="dp-hint"></div>
-        <div id="dp-error" class="dp-error hidden">⚠ DP di luar rentang tersedia</div>
+        <div id="dp-hints" class="dp-hints-row">
+          <span id="dp-min-hint" class="dp-chip">Min: -</span>
+          <span id="dp-normal-hint" class="dp-chip">Normal: -</span>
+        </div>
+        <div id="dp-error" class="dp-error hidden"></div>
       </div>
 
-      <button id="simulate-btn" class="simulate-btn hidden">
-        Hitung Angsuran →
-      </button>
+      <button id="simulate-btn" class="simulate-btn hidden">Hitung Angsuran →</button>
 
     </section>
 
     <!-- RESULT CARD -->
     <section id="result-card" class="result-card hidden">
-      <div class="result-header">
-        <span class="result-tag">Hasil Simulasi</span>
-      </div>
 
       <div class="result-motor-name" id="res-motor"></div>
 
-      <div class="result-grid">
-        <div class="res-block">
-          <div class="res-label">Uang Muka</div>
-          <div class="res-value" id="res-dp">-</div>
-          <div class="res-note" id="res-dp-note"></div>
-        </div>
-        <div class="res-block accent">
+      <!-- Angsuran -->
+      <div class="res-section-label">Angsuran</div>
+      <div class="result-grid three-col">
+        <div class="res-block accent span-full">
           <div class="res-label">Angsuran / Bulan</div>
           <div class="res-value big" id="res-installment">-</div>
         </div>
@@ -102,11 +88,47 @@
         </div>
       </div>
 
-      <div class="result-footer">
-        <div class="result-total-block">
-          <span class="res-label">Total Bayar</span>
-          <span class="res-total" id="res-total">-</span>
+      <!-- DP Breakdown -->
+      <div class="res-section-label" style="margin-top:20px">Kalkulasi DP</div>
+      <div class="result-grid two-col">
+
+        <div class="res-block highlight-dp">
+          <div class="res-label">DP Customer</div>
+          <div class="res-value yellow" id="res-dp-customer">-</div>
         </div>
+
+        <div class="res-block">
+          <div class="res-label">DP Normal</div>
+          <div class="res-value" id="res-dp-normal">-</div>
+          <div class="res-note" id="res-dp-note"></div>
+        </div>
+
+        <div class="res-block">
+          <div class="res-label">Plafon Diskon</div>
+          <div class="res-value green" id="res-plafon">-</div>
+        </div>
+
+        <div class="res-block highlight-setor">
+          <div class="res-label">Setor ke Dealer</div>
+          <div class="res-value white-bold" id="res-setor">-</div>
+          <div class="res-note">DP Normal − Plafon</div>
+        </div>
+
+      </div>
+
+      <!-- Profit -->
+      <div class="profit-band">
+        <div class="profit-row">
+          <span class="profit-label">💰 Untung Sales</span>
+          <span class="profit-value" id="res-untung">-</span>
+        </div>
+        <div class="profit-note" id="res-dp-min-note"></div>
+      </div>
+
+      <!-- Total kredit -->
+      <div class="total-row">
+        <span class="total-label">Total Bayar Kredit</span>
+        <span class="total-value" id="res-total-kredit">-</span>
       </div>
 
       <button class="reset-btn" id="reset-btn">← Hitung Ulang</button>
@@ -115,10 +137,11 @@
   </main>
 
   <footer class="app-footer">
-    Data resmi FIF Group · Hanya untuk simulasi
+    DataBase Final PL FIF Group · Team Eep · Simulasi internal by Faka
   </footer>
 
   <script src="data.js"></script>
+  <script src="plafon_data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,68 +1,78 @@
 // ============================================================
-//  FIF Simulasi Kredit Motor — script.js
-//  Uses FIF_DATA from data.js (no formula calculations)
+//  Simulasi Kredit Motor — script.js
+//  Logic: DP bebas, DP minimum = Setor Dealer (untung = 0)
+//  Plafon: SEMUA LEASING bracket 15-30% dari plafon_data.js
 // ============================================================
 
-const motorSelect    = document.getElementById('motor-select');
-const otrBadge       = document.getElementById('otr-badge');
-const otrValue       = document.getElementById('otr-value');
-const tenorGroup     = document.getElementById('tenor-group');
-const tenorButtons   = document.getElementById('tenor-buttons');
-const dpGroup        = document.getElementById('dp-group');
-const dpInput        = document.getElementById('dp-input');
-const dpRangeHint    = document.getElementById('dp-range-hint');
-const dpError        = document.getElementById('dp-error');
-const simulateBtn    = document.getElementById('simulate-btn');
-const resultCard     = document.getElementById('result-card');
-const resetBtn       = document.getElementById('reset-btn');
+// ─── DOM ─────────────────────────────────────────────────────
+const motorSelect   = document.getElementById('motor-select');
+const otrBadge      = document.getElementById('otr-badge');
+const otrValueEl    = document.getElementById('otr-value');
+const tenorGroup    = document.getElementById('tenor-group');
+const tenorBtnsEl   = document.getElementById('tenor-buttons');
+const dpGroup       = document.getElementById('dp-group');
+const dpInput       = document.getElementById('dp-input');
+const dpMinHint     = document.getElementById('dp-min-hint');
+const dpNormalHint  = document.getElementById('dp-normal-hint');
+const dpError       = document.getElementById('dp-error');
+const simulateBtn   = document.getElementById('simulate-btn');
+const resultCard    = document.getElementById('result-card');
+const resetBtn      = document.getElementById('reset-btn');
 
-// Result elements
+// Result
 const resMotor       = document.getElementById('res-motor');
-const resDp          = document.getElementById('res-dp');
-const resDpNote      = document.getElementById('res-dp-note');
 const resInstallment = document.getElementById('res-installment');
 const resTenor       = document.getElementById('res-tenor');
 const resOtr         = document.getElementById('res-otr');
-const resTotal       = document.getElementById('res-total');
+const resDpCustomer  = document.getElementById('res-dp-customer');
+const resDpNormal    = document.getElementById('res-dp-normal');
+const resDpNote      = document.getElementById('res-dp-note');
+const resPlafon      = document.getElementById('res-plafon');
+const resSetor       = document.getElementById('res-setor');
+const resUntung      = document.getElementById('res-untung');
+const resDpMinNote   = document.getElementById('res-dp-min-note');
+const resTotalKredit = document.getElementById('res-total-kredit');
 
+// ─── State ───────────────────────────────────────────────────
 let selectedSheetKey = null;
 let selectedTenor    = null;
 let rawDpValue       = '';
 
-// ─── Helpers ────────────────────────────────────────────────
+// Derived from selected motor + tenor (updated when tenor selected)
+let currentDpMin    = 0;   // DP minimum = setor dealer
+let currentDpNormal = 0;   // first DP in table (DP normal minimum)
 
-function formatRp(num) {
-  return 'Rp ' + Number(num).toLocaleString('id-ID');
+// ─── Helpers ─────────────────────────────────────────────────
+const fmt = n => 'Rp ' + Number(n).toLocaleString('id-ID');
+
+function findClosestDp(dpTable, target) {
+  return dpTable.reduce((best, row) =>
+    Math.abs(row.dp - target) < Math.abs(best.dp - target) ? row : best
+  );
 }
 
-function parseRpInput(str) {
-  // Remove all non-digit characters
-  return parseInt(str.replace(/\D/g, ''), 10) || 0;
+function setDpInputValue(num) {
+  rawDpValue = String(num);
+  dpInput.value = num > 0 ? num.toLocaleString('id-ID') : '';
 }
 
-function formatDpDisplay(num) {
-  // Format number with thousand separators for the input field
-  return num === 0 ? '' : num.toLocaleString('id-ID');
+// ─── Compute DP min for current motor + tenor ─────────────────
+function computeDpMin(sheetKey, tenor) {
+  const data   = FIF_DATA[sheetKey];
+  const plafon = getPlafonDiskon(sheetKey, tenor);
+  // Walk dp_table from lowest DP; find first row where dp - plafon >= 0
+  // i.e. setor dealer >= 0 and untung >= 0 when dpCustomer == setor
+  // Setor dealer = dpNormal - plafon
+  // dpMin = setor dealer = dpNormal - plafon
+  // We use the smallest dp entry's setor as the dp minimum
+  const firstRow = data.dp_table[0];
+  const setor    = Math.max(0, firstRow.dp - plafon);
+  return setor; // DP minimum customer bisa bayar tanpa nombok
 }
 
-function findClosestDp(dpTable, targetDp) {
-  let closest = null;
-  let minDiff = Infinity;
-  for (const row of dpTable) {
-    const diff = Math.abs(row.dp - targetDp);
-    if (diff < minDiff) {
-      minDiff = diff;
-      closest = row;
-    }
-  }
-  return closest;
-}
-
-// ─── Populate motor dropdown ─────────────────────────────────
-
+// ─── Populate motor dropdown ──────────────────────────────────
 function populateMotors() {
-  const keys = Object.keys(FIF_DATA);
-  keys.forEach(key => {
+  Object.keys(FIF_DATA).forEach(key => {
     const opt = document.createElement('option');
     opt.value = key;
     opt.textContent = FIF_DATA[key].name;
@@ -71,158 +81,153 @@ function populateMotors() {
 }
 
 // ─── Populate tenor buttons ───────────────────────────────────
-
 function populateTenors(tenors) {
-  tenorButtons.innerHTML = '';
+  tenorBtnsEl.innerHTML = '';
   tenors.forEach(t => {
     const btn = document.createElement('button');
-    btn.className = 'tenor-btn';
+    btn.className  = 'tenor-btn';
     btn.dataset.tenor = t;
-    btn.innerHTML = `${t}<small>bln</small>`;
+    btn.innerHTML  = `${t}<small>bln</small>`;
     btn.addEventListener('click', () => selectTenor(t));
-    tenorButtons.appendChild(btn);
+    tenorBtnsEl.appendChild(btn);
   });
 }
 
 function selectTenor(tenor) {
   selectedTenor = tenor;
-  document.querySelectorAll('.tenor-btn').forEach(b => {
-    b.classList.toggle('active', parseInt(b.dataset.tenor) === tenor);
-  });
-  // Show DP field
-  dpGroup.style.display = 'flex';
+  document.querySelectorAll('.tenor-btn').forEach(b =>
+    b.classList.toggle('active', parseInt(b.dataset.tenor) === tenor)
+  );
+
   const data = FIF_DATA[selectedSheetKey];
-  const minDp = data.dp_table[0].dp;
-  const maxDp = data.dp_table[data.dp_table.length - 1].dp;
-  dpRangeHint.textContent = `Tersedia: ${formatRp(minDp)} – ${formatRp(maxDp)}`;
+  const plafon = getPlafonDiskon(selectedSheetKey, tenor);
+
+  // DP min = setor dealer from lowest dp row
+  currentDpMin    = Math.max(0, data.dp_table[0].dp - plafon);
+  currentDpNormal = data.dp_table[0].dp;
+
+  // Update hints
+  dpMinHint.textContent    = `Min: ${fmt(currentDpMin)}`;
+  dpNormalHint.textContent = `Normal: ${fmt(currentDpNormal)}`;
+
+  // Make chips clickable → auto-fill
+  dpMinHint.onclick    = () => { setDpInputValue(currentDpMin);    validateAndUpdate(); };
+  dpNormalHint.onclick = () => { setDpInputValue(currentDpNormal); validateAndUpdate(); };
+
+  dpGroup.style.display = 'flex';
+  dpInput.value = '';
+  rawDpValue = '';
+  dpError.classList.add('hidden');
+  simulateBtn.classList.add('hidden');
   dpInput.focus();
-  checkShowSimulateBtn();
 }
 
-// ─── Event: motor select ──────────────────────────────────────
-
+// ─── Motor change ─────────────────────────────────────────────
 motorSelect.addEventListener('change', () => {
   const key = motorSelect.value;
   selectedSheetKey = key || null;
-  selectedTenor = null;
-  rawDpValue = '';
-  dpInput.value = '';
+  selectedTenor    = null;
+  rawDpValue       = '';
+  dpInput.value    = '';
   dpError.classList.add('hidden');
 
   if (!key) {
     otrBadge.classList.add('hidden');
     tenorGroup.style.display = 'none';
-    dpGroup.style.display = 'none';
+    dpGroup.style.display    = 'none';
     simulateBtn.classList.add('hidden');
     return;
   }
 
-  const data = FIF_DATA[key];
-  otrValue.textContent = formatRp(data.otr);
+  otrValueEl.textContent = fmt(FIF_DATA[key].otr);
   otrBadge.classList.remove('hidden');
-
   tenorGroup.style.display = 'flex';
-  populateTenors(data.tenors);
-
-  dpGroup.style.display = 'none';
+  populateTenors(FIF_DATA[key].tenors);
+  dpGroup.style.display    = 'none';
   simulateBtn.classList.add('hidden');
 });
 
-// ─── Event: DP input ──────────────────────────────────────────
-
-dpInput.addEventListener('input', (e) => {
-  // Remove non-numeric characters and reformat
-  const raw = e.target.value.replace(/\D/g, '');
-  rawDpValue = raw;
-  const num = parseInt(raw, 10) || 0;
-  // Reformat with thousand separator
-  const formatted = num > 0 ? num.toLocaleString('id-ID') : '';
-  // Set cursor correction
-  e.target.value = formatted;
-
-  dpError.classList.add('hidden');
-  checkShowSimulateBtn();
-  validateDpRange(num);
+// ─── DP input ─────────────────────────────────────────────────
+dpInput.addEventListener('input', e => {
+  rawDpValue = e.target.value.replace(/\D/g, '');
+  const num = parseInt(rawDpValue, 10) || 0;
+  e.target.value = num > 0 ? num.toLocaleString('id-ID') : '';
+  validateAndUpdate(num);
 });
 
-function validateDpRange(num) {
-  if (!selectedSheetKey || num === 0) return;
-  const data = FIF_DATA[selectedSheetKey];
-  const minDp = data.dp_table[0].dp;
-  const maxDp = data.dp_table[data.dp_table.length - 1].dp;
-  if (num < minDp || num > maxDp) {
+function validateAndUpdate(num) {
+  if (num === undefined) num = parseInt(rawDpValue, 10) || 0;
+  if (!selectedSheetKey || !selectedTenor) return;
+
+  const data   = FIF_DATA[selectedSheetKey];
+  const maxDp  = data.dp_table[data.dp_table.length - 1].dp;
+
+  if (num === 0) {
+    dpError.classList.add('hidden');
+    simulateBtn.classList.add('hidden');
+    return;
+  }
+
+  if (num < currentDpMin) {
+    dpError.textContent = `⚠ DP minimum ${fmt(currentDpMin)} — sales akan nombok di bawah ini`;
     dpError.classList.remove('hidden');
+    simulateBtn.classList.add('hidden');
+  } else if (num > maxDp) {
+    dpError.textContent = `⚠ DP maksimum ${fmt(maxDp)}`;
+    dpError.classList.remove('hidden');
+    simulateBtn.classList.add('hidden');
   } else {
     dpError.classList.add('hidden');
-  }
-}
-
-function checkShowSimulateBtn() {
-  const dpNum = parseInt(rawDpValue, 10) || 0;
-  if (selectedSheetKey && selectedTenor && dpNum > 0) {
     simulateBtn.classList.remove('hidden');
-  } else {
-    simulateBtn.classList.add('hidden');
   }
 }
 
 // ─── Simulate ─────────────────────────────────────────────────
-
 simulateBtn.addEventListener('click', simulate);
 
 function simulate() {
-  const dpNum = parseInt(rawDpValue, 10) || 0;
-  if (!selectedSheetKey || !selectedTenor || dpNum === 0) return;
+  const dpCustomer = parseInt(rawDpValue, 10) || 0;
+  if (!selectedSheetKey || !selectedTenor || dpCustomer === 0) return;
 
-  const data = FIF_DATA[selectedSheetKey];
-  const minDp = data.dp_table[0].dp;
-  const maxDp = data.dp_table[data.dp_table.length - 1].dp;
+  const data        = FIF_DATA[selectedSheetKey];
+  const closestRow  = findClosestDp(data.dp_table, dpCustomer);
+  const dpNormal    = closestRow.dp;
+  const installment = closestRow.installments[String(selectedTenor)];
+  if (!installment) { alert('Data angsuran tidak tersedia.'); return; }
 
-  if (dpNum < minDp || dpNum > maxDp) {
-    dpError.classList.remove('hidden');
-    return;
-  }
+  const plafon  = getPlafonDiskon(selectedSheetKey, selectedTenor);
+  const setor   = Math.max(0, dpNormal - plafon);
+  const untung  = Math.max(0, dpCustomer - setor);
+  const totalKredit = dpCustomer + (installment * selectedTenor);
 
-  // Find closest DP row
-  const closest = findClosestDp(data.dp_table, dpNum);
-  const tenorKey = String(selectedTenor);
-  const installment = closest.installments[tenorKey];
+  // Render
+  resMotor.textContent        = data.name;
+  resInstallment.textContent  = fmt(installment);
+  resTenor.textContent        = selectedTenor + ' bulan';
+  resOtr.textContent          = fmt(data.otr);
+  resDpCustomer.textContent   = fmt(dpCustomer);
+  resDpNormal.textContent     = fmt(dpNormal);
+  resDpNote.textContent       = dpNormal !== dpCustomer ? `terdekat dari ${fmt(dpCustomer)}` : '';
+  resPlafon.textContent       = fmt(plafon);
+  resSetor.textContent        = fmt(setor);
+  resUntung.textContent       = fmt(untung);
+  resUntung.className         = 'profit-value' + (untung === 0 ? ' zero' : '');
+  resDpMinNote.textContent    = untung === 0
+    ? '⚠ Ini DP minimum — untung sales = 0'
+    : `DP minimum untuk motor ini: ${fmt(setor)}`;
+  resTotalKredit.textContent  = fmt(totalKredit);
 
-  if (!installment) {
-    alert('Data angsuran tidak ditemukan untuk tenor ini.');
-    return;
-  }
-
-  // Calculate total
-  const total = installment * selectedTenor;
-
-  // Populate result
-  resMotor.textContent = data.name;
-  resDp.textContent = formatRp(closest.dp);
-  if (closest.dp !== dpNum) {
-    resDpNote.textContent = `(DP terdekat dari ${formatRp(dpNum)})`;
-  } else {
-    resDpNote.textContent = '';
-  }
-  resInstallment.textContent = formatRp(installment);
-  resTenor.textContent = selectedTenor + ' bulan';
-  resOtr.textContent = formatRp(data.otr);
-  resTotal.textContent = formatRp(total + closest.dp);
-
-  // Show result, hide form
   document.querySelector('.form-card').style.display = 'none';
   resultCard.classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ─── Reset ────────────────────────────────────────────────────
-
 resetBtn.addEventListener('click', () => {
   document.querySelector('.form-card').style.display = 'flex';
   resultCard.classList.add('hidden');
-  // Don't reset motor/tenor selection — let user just change DP
   dpInput.value = '';
-  rawDpValue = '';
+  rawDpValue    = '';
   dpError.classList.add('hidden');
   simulateBtn.classList.add('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
