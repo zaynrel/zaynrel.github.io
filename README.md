@@ -1,1 +1,1 @@
-so this is just my little web project
+Simul Kredit iseng aja gw bikin buat gawe
